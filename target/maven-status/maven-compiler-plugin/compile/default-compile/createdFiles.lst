@@ -1,0 +1,15 @@
+com\cibt\kaampay\entity\MasterEntity.class
+com\cibt\kaampay\service\impl\UserServiceImpl.class
+com\cibt\kaampay\Main.class
+com\cibt\kaampay\entity\UserLog.class
+com\cibt\kaampay\repository\UserLogRepository.class
+com\cibt\kaampay\entity\User.class
+com\cibt\kaampay\core\JDBCTemplate.class
+com\cibt\kaampay\repository\UserRepository.class
+com\cibt\kaampay\repository\CRUD.class
+com\cibt\kaampay\repository\impl\UserRepositoryImpl.class
+com\cibt\kaampay\service\GenericService.class
+com\cibt\kaampay\service\impl\UserLogServiceImpl.class
+com\cibt\kaampay\service\UserLogService.class
+com\cibt\kaampay\repository\impl\UserLogRepositoryImpl.class
+com\cibt\kaampay\service\UserService.class
