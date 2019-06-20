@@ -15,5 +15,7 @@ import com.cibt.kaampay.entity.User;
 public interface UserRepository extends CRUD<User> {
 
     User login(String email, String password)throws Exception;
+    User findByEmail(String email)throws Exception;
+    boolean changeStatus(int id,boolean status)throws Exception;
 
 }

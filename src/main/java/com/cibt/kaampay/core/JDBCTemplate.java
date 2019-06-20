@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,41 +19,59 @@ import java.util.List;
  */
 public class JDBCTemplate<T> {
 
-    public int update(String sql, Object[] params) throws Exception {
+    private Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         String url = "jdbc:mysql://localHost/kaampay";
         String userName = "root";
         String password = "";
-        Connection conn = DriverManager.getConnection(url, userName, password);
+        return DriverManager.getConnection(url, userName, password);
 
-        PreparedStatement stmt = conn.prepareStatement(sql);
+    }
+
+    private void addParameters(PreparedStatement stmt, Object[] params) throws SQLException {
         int counter = 1;
         for (Object param : params) {
             stmt.setObject(counter, param);
             counter++;
         }
+    }
+
+    public int update(String sql, Object[] params) throws Exception {
+
+        PreparedStatement stmt = getConnection().prepareStatement(sql);
+        addParameters(stmt, params);
+
         int result = stmt.executeUpdate();
         return result;
     }
 
     public List<T> query(String sql, RowMapper<T> mapper) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
 
-        String url = "jdbc:mysql://localHost/kaampay";
-        String userName = "root";
-        String password = "";
-        Connection conn = DriverManager.getConnection(url, userName, password);
+        PreparedStatement stmt = getConnection().prepareStatement(sql);
 
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        
         List<T> rows = new ArrayList<>();
-        ResultSet rs =stmt.executeQuery();
-        while(rs.next()){
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
             rows.add(mapper.mapRow(rs));
         }
         return rows;
-        
+
+    }
+
+    public T queryForObject(String sql, Object[] params, RowMapper<T> mapper) throws Exception {
+
+        T row = null;
+
+        PreparedStatement stmt = getConnection().prepareStatement(sql);
+        addParameters(stmt, params);
+
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            row = mapper.mapRow(rs);
+        }
+        return row;
+
     }
 
 }

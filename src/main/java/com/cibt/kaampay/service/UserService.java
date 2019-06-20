@@ -15,6 +15,7 @@ import com.cibt.kaampay.entity.User;
 public interface UserService extends GenericService<User> {
     
     User login(String email, String password)throws Exception;
+    boolean verify(String email)throws Exception;
 
    
 }
